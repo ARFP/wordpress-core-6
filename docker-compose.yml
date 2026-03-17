@@ -1,0 +1,31 @@
+name: mde-wp6
+volumes:
+  db_data_wp:
+services:
+  wordpress_db:
+    container_name: mde-wp6-db
+    image: mariadb:11.8.5
+    command: '--default-authentication-plugin=mysql_native_password'
+    volumes:
+      - db_data_wp:/var/lib/mysql
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=db_wordpress
+      - MYSQL_USER=username
+      - MYSQL_PASSWORD=password
+    ports: ['3311:3306']
+  wordpress:
+    container_name: mde-wp6-web
+    image: wordpress:6.9.2-php8.5-apache
+    ports: ['8089:80']
+    restart: unless-stopped
+    depends_on: ['wordpress_db']
+    environment:
+      - WORDPRESS_DB_HOST=wordpress_db
+      - WORDPRESS_DB_NAME=db_wordpress
+      - WORDPRESS_DB_USER=username
+      - WORDPRESS_DB_PASSWORD=password
+    working_dir: /var/www/html
+    volumes:
+      - ./htdocs:/var/www/html
