@@ -1,20 +1,26 @@
+Par défaut, si vous souhaitez que VsCode reconnaisse les fonctions de wordpress, vous devez ouvrir le dossier avec l'installation de Wordpress.
+
+Pour que VS Code reconnaisse les fonctions WordPress sans polluer votre dépôt Git avec l'installation complète du CMS, suivre la procédure suivante.
 
 
-Pour que VS Code reconnaisse les fonctions WordPress sans polluer votre dépôt Git, la méthode la plus propre consiste à modifier les paramètres de l'espace de travail.
+1. Installer les estensions VsCode:
+-  **[PHP Intelephense](https://marketplace.visualstudio.com/items?itemName=bmewburn.vscode-intelephense-client)** dans VS Code pour que les paramètres de ce document soient pris en compte.
+- **[PHP Debug](https://marketplace.visualstudio.com/items?itemName=xdebug.php-debug)** pour le debogage en live.
 
-Configurer un fichier `.vscode/settings.json` à la racine de votre projet :
+2.  **[Téléchargez WordPress](https://fr.wordpress.org/download/)** (le dossier `.zip`) et décompressez-le quelque part sur votre ordinateur (par exemple dans `C:/dev/wordpress` ou `~/dev/wordpress`).
 
-1.  **Téléchargez WordPress** (le dossier `.zip`) et décompressez-le quelque part sur votre ordinateur (par exemple dans `C:/dev/wordpress` ou `~/dev/wordpress`).
 2. Dans le projet (le dossier qui contient le thème ou plugin à développer), créez un dossier `.vscode` s'il n'existe pas.
-3. Crée un fichier `settings.json` à l'intérieur et collez-y ceci :
-4. Installer l'extension **PHP Intelephense** de Ben McNamara dans VS Code pour que ces paramètres soient pris en compte
+
+3. Dans ce dossier, créer un fichier `settings.json` à l'intérieur et collez-y ceci :
+
 
 ```json
 {
     "php.suggest.basic": false,
     "intelephense.environment.includePaths": [
-        "C:/Users/mdevoldere/wordpress/wordpress-6.9.4"
+        "C:/dev/wordpress/wordpress-6.4.9"
     ],
+    "intelephense.environment.phpVersion": "8.4.0",
     "intelephense.stubs": [
         "wordpress",
         "apache",
@@ -95,4 +101,21 @@ Configurer un fichier `.vscode/settings.json` à la racine de votre projet :
         "zlib"
     ]
 }
+```
+
+
+Avec cette configuration, le dossier de travail Wordpress ressemblera à ceci : 
+
+```
+/mon-projet-wordpress/
+├── .vscode/             <-- settings.json & launch.json (WP)
+├── wp-content/          <-- Votre code (Themes/Plugins)
+├── docker-compose.yml   <-- Uniquement WP + DB
+└── Dockerfile           <-- Dockerfile (WP 6.9.4 + MariaDB + Xdebug)
+
+/mon-projet-api/
+├── .vscode/             <-- settings.json & launch.json (Symfony)
+├── src/                 <-- Votre code Symfony 8.4
+├── docker-compose.yml   <-- Uniquement Symfony + DB
+└── symfony/             <-- Dockerfile (PHP 8.4 + Apache + VHost)
 ```

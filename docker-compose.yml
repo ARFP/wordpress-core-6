@@ -17,7 +17,8 @@ services:
     ports: ['3311:3306']
   wordpress:
     container_name: mde-wp6-web
-    image: wordpress:6.9.2-php8.5-apache
+    # image: wordpress:6.9.4-php8.5-apache
+    context: .
     ports: ['8089:80']
     restart: unless-stopped
     depends_on: ['wordpress_db']
@@ -28,4 +29,5 @@ services:
       - WORDPRESS_DB_PASSWORD=password
     working_dir: /var/www/html
     volumes:
-      - ./htdocs:/var/www/html
+      - ./wp-content:/var/www/html/wp-content
+     # - ./htdocs:/var/www/html
