@@ -16,4 +16,11 @@ RUN { \
 # On s'assure que les droits sont corrects pour Apache
 RUN chown -R www-data:www-data /var/www/html
 
+# Installation de Node.js et NPM (via le dépôt Nodesource)
+# RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+#    && apt-get install -y nodejs
+
+# Installation globale de l'outil de création de blocs Wordpress (optionnel mais pratique)
+# RUN npm install -g @wordpress/create-block
+
 WORKDIR /var/www/html
